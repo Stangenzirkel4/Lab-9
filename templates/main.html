@@ -2,24 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CV Creator</title>
+    <style>
+        body {
+        font-family: Courier;
+        margin: 10;
+        padding: 0;
+        }
+
+        header {
+        background-color: #110;
+        color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+    </style>
 </head>
-<body>
-<h2>Messages:</h2>
-<form method="post" action="/add_message">
-    <input type="text" name="text">
-    <input type="text" name="tag">
-    <button type="submit">Add message</button>
+<body bgcolor=gray>
+<h1>CV Creator</h1>
+<h2>Add work experience:</h2>
+<form method="post" action="/add_experience">
+    <input type="text" name="company">
+    <input type="number" name="term">
+    <button type="submit">Add experience</button>
+</form>
+<br>
+
+<form method="post" action="/clear_db">
+    <button type="submit">Clear CV</button>
 </form>
 
-<h3>Messages list</h3>
-{% for message in messages %}
-<div>{{ message.text }}&nbsp;
-    {% for tag in message.tags %}
-        <b>#{{ tag.text }}</b>
+<h3>CV:</h3>
+{% set ns = namespace(sum = 0) %}
+{{ sum }}
+{% for company in companies %}
+<div>
+    {{ company.company_name }}
+    {% for t in company.term %}
+        <b>{{ t.duration }}</b>
+        {% set d = t.duration | int %}
+        {% set ns.sum = ns.sum + d %}
     {% endfor %}
 </div>
 {% endfor %}
-
+<br>
+<h3>Summary experience {{ ns.sum }}</h3>
 </body>
 </html>
